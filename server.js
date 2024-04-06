@@ -3,9 +3,11 @@ const bodyParser = require("body-parser");
 const { spawn } = require("child_process");
 const fetch = require("node-fetch");
 const cheerio = require("cheerio");
+const cors = require("cors");
 
 const app = express();
-const port = 3001;
+app.use(cors());
+const port = 3002;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -54,7 +56,11 @@ async function fetchIndustryData(industries) {
     const industryData = [];
 
     for (const industry of industries) {
-      const searchCount = await fetchSearchCount(industry);
+      let searchCount = await fetchSearchCount(industry);
+
+      while (searchCount === null || isNaN(searchCount)) {
+        searchCount = await fetchSearchCount(industry);
+      }
       industryData.push(Number(searchCount));
     }
 
