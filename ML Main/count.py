@@ -5,14 +5,16 @@ counts = []
 disc = df.iloc[:,1]
 # for x in disc:
 #     print(x)
-f = open('test1.json')
+f = open('frequent.json')
 dic = json.load(f)
 for x in disc:
     count = 0
-    for y in x:
-        y = y.lower()
-        if y in dic.keys():
-            count += dic[y]
+    x = x.lower()
+    y = x.split()
+    for z in y:
+        if z in dic.keys():
+            print("aagaya")
+            count += int(dic[z])
     counts.append(count)
 
 for x in counts:

@@ -8,7 +8,7 @@ def read_text_file(file_path):
             word_count[word] = int(count)
     return word_count
 
-file_paths = ['frequent_words.txt', 'frequent_words3.txt', 'frequent_words4.txt', 'frequent_words5.txt']
+file_paths = ['txt files/frequent_words.txt', 'txt files/frequent_words3.txt', 'txt files/frequent_words4.txt', 'txt files/frequent_words5.txt']
 all_word_counts = [read_text_file(file_path) for file_path in file_paths]
 
 for word_count in all_word_counts[1:]:
