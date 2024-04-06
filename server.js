@@ -4,6 +4,7 @@ const { spawn } = require("child_process");
 const fetch = require("node-fetch");
 const cheerio = require("cheerio");
 const cors = require("cors");
+const mongoose = require("mongoose"); // Add this line
 
 const app = express();
 app.use(cors());
@@ -12,9 +13,41 @@ const port = 3002;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// MongoDB connection
+mongoose.connect("mongodb://localhost:27017/mydatabase", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "MongoDB connection error:"));
+db.once("open", () => {
+  console.log("Connected to MongoDB database");
+});
+
+// Define a schema for saving data to MongoDB
+const DataSchema = new mongoose.Schema({
+  title: String,
+  target_industry: [String],
+  problem_statement: [String],
+  output: [String],
+});
+
+// Create a model based on the schema
+const DataModel = mongoose.model("DataModel", DataSchema);
+
 app.post("/post", async (req, res) => {
   try {
     const { title, target_industry, problem_statement } = req.body;
+
+    // Save input data to MongoDB
+    const inputData = new DataModel({
+      title,
+      target_industry: target_industry.split(",").map((term) => term.trim()),
+      problem_statement: problem_statement
+        .split(",")
+        .map((term) => term.trim()),
+    });
+    await inputData.save();
 
     const targetIndustriesArray = target_industry
       .split(",")
@@ -42,6 +75,13 @@ app.post("/post", async (req, res) => {
         .map((item) => item.trim());
 
       console.log(formattedData);
+
+      // Update output in MongoDB
+      await DataModel.findOneAndUpdate(
+        { title },
+        { output: formattedData },
+        { new: true }
+      );
 
       res.json({ message: "Data processed successfully", data: formattedData });
     });
