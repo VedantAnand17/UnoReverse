@@ -19,8 +19,8 @@ data = {
 df = pd.DataFrame(data)
 
 # Separate features (X) and target variable (y)
-X = df[['prob', 'size', 'tec_sc']]
-y = d1[:5].tolist()
+X = df[['prob', 'size', 'tech_sc']]
+y = d1.iloc[:,5].tolist()
 
 # Split the dataset into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
