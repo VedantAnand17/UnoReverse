@@ -36,7 +36,6 @@ const DataModel = mongoose.model("DataModel", DataSchema);
 app.post("/post", async (req, res) => {
   try {
     const { title, target_industry, problem_statement } = req.body;
-    console.log(req);
 
     const inputData = new DataModel({
       title,
@@ -55,32 +54,34 @@ app.post("/post", async (req, res) => {
     const array1 = problem_statement.split(",").map((term) => term.trim());
 
     const industryData = await fetchIndustryData(targetIndustriesArray);
+
     const pythonProcess = spawn("python", [
       "script3.py",
       title,
-      JSON.stringify(industryData),
-      JSON.stringify(array1),
+      target_industry,
+      problem_statement,
     ]);
 
     let responseData = [];
 
     pythonProcess.stdout.on("data", async (data) => {
       const response = data.toString().trim();
-
       responseData.push(response);
+
       const formattedData = responseData[0]
         .split("\n")
         .map((item) => item.trim());
+      const percentage = formattedData[0];
 
-      console.log("this data is coming from script", formattedData);
+      res.send(`Percentage: ${percentage}%`);
+
+      console.log("Data from Python script:", formattedData);
 
       await DataModel.findOneAndUpdate(
         { title },
         { output: formattedData },
         { new: true }
       );
-
-      res.json({ formattedData });
     });
   } catch (error) {
     console.error("Error processing request:", error);
