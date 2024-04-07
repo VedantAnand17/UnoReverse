@@ -1,7 +1,7 @@
 <!doctype html>
 <html class="no-js" lang="en">
     <head>
-        <title>UNO reverse</title>
+        <title>Crafto - The Multipurpose HTML5 Template</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="author" content="ThemeZaa">
@@ -534,9 +534,9 @@
                     const responseData = await response.json();
                     console.log('Response:', responseData);
                     document.cookie = `myCookie=${responseData}; max-age=3600`; 
-          
-                 
-                    window.location.href = 'elementprogress.html'; 
+       
+                   
+                    window.location.href = `elementprogress.html?percent=${responseData}`; 
                   } else {
                     console.error('Error:', response.statusText);
                   }
@@ -548,6 +548,7 @@
               button.addEventListener('click', handleSubmit);
             });
           </script>
+          
           
     </body>
 </html>
