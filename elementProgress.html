@@ -87,9 +87,10 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="text-start">
-<!--                             <span class="fs-20 lh-28 text-dark-gray fw-500 d-inline-block w-70 xs-w-100">Increased revenue in the <span class="text-decoration-line-bottom-medium fw-600 text-base-color">last 2 years.</span></span> -->
-                        </div>
+                        
+                            <div id="percentageElement" class=" ""></div>
+
+                        
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-6 offset-xl-1 position-relative">
@@ -112,13 +113,15 @@
         <script>
           document.addEventListener('DOMContentLoaded', () => {
             const percentageElement = document.getElementById('percentageElement');
-       
+        
+            // Get the value from the URL query parameter named 'percent'
             const urlParams = new URLSearchParams(window.location.search);
             const percentValue = urlParams.get('percent');
         
             if (percentValue) {
-             
+              // Update the data-percent attribute with the value from the URL parameter
               percentageElement.setAttribute('data-percent', percentValue / 10);
+              percentageElement.innerText = `${percentValue / 10}%`;
             }
           });
         </script>
