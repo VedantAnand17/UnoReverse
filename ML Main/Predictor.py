@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import category_encoders as ce
 from sklearn.metrics import mean_squared_error
+import repcount as rc
 d1 = pd.read_excel('ML Main/traning.xlsx')
 d2 = pd.read_excel('ML Main/test_dump.xlsx')
 # for x in count:
@@ -34,6 +35,18 @@ model_binary = LinearRegression().fit(X_train_binary, y_train)
 
 # Evaluate model on the test set
 X_test_binary = binary_encoder.transform(X_test[['prob']])
+# print(type(X_test))
+# print(X_test)
+inp = ['Software toolset for storage browsing and permission based access to geospatial data using blockchain',3561008, 'data integrity']
+#input in the format [title, gsearch, problem tag]
+rel = rc.counter(inp[0])
+p = {
+        'prob' : inp[2], 
+        'size': inp[1], 
+        'tech_sc': rel
+    }
+X_test = pd.DataFrame(p,index = ['prob', 'size','tech_sc'])
+X_test_binary = binary_encoder.transform(X_test[['prob']])
 y_pred_binary = model_binary.predict(X_test_binary)
-mse_binary = mean_squared_error(y_test, y_pred_binary)
-print(f"Binary Encoding Model - Mean Squared Error: {mse_binary}")
+y_pred_binary = int(y_pred_binary[0]*100)
+print(y_pred_binary)
