@@ -5,17 +5,18 @@ counts = []
 disc = df.iloc[:,1]
 # for x in disc:
 #     print(x)
-f = open('frequent.json')
+f = open('test2.json')
 dic = json.load(f)
+print(dic)
 for x in disc:
     count = 0
     x = x.lower()
     y = x.split()
     for z in y:
-        if z in dic.keys():
-            print("aagaya")
+        # print(z)
+       if z in dic.keys():
             count += int(dic[z])
     counts.append(count)
 
-for x in counts:
-    print(x)
+dp = pd.DataFrame(counts)
+dp.to_excel('ML Main/test_dump.xlsx')

@@ -4,19 +4,23 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import category_encoders as ce
 from sklearn.metrics import mean_squared_error
-
+d1 = pd.read_excel('ML Main/traning.xlsx')
+d2 = pd.read_excel('ML Main/test_dump.xlsx')
+# for x in count:
+#     print(x)
+# print(len(d1.iloc[:,4]))
+# print(type(count))
 # Create a synthetic dataset
 data = {
-    'prob': ['red', 'green', 'blue', 'red', 'green'],
-    'size': [3, 5, 2, 4, 1],
-    'tech_sc': [10, 20, 15, 25, 5]
+    'prob': d1.iloc[:,3].tolist(),
+    'size': d1.iloc[:,4].tolist(),
+    'tech_sc': d1.iloc[:,6].tolist()
 }
-
 df = pd.DataFrame(data)
 
 # Separate features (X) and target variable (y)
-X = df[['prob', 'size']]
-y = df['price']
+X = df[['prob', 'size', 'tec_sc']]
+y = d1[:5].tolist()
 
 # Split the dataset into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
